@@ -1,0 +1,18 @@
+app-id: boisestate.cs573.ExtensionShellApp
+default-branch: stable
+runtime: org.freedesktop.Sdk
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.cs573
+
+command: /app/bin/sh
+modules:
+  - name: cs573
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/cs573/install.sh
+
+finish-args:
+  - --filesystem=host
+  - --allow=devel

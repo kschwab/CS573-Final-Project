@@ -1,0 +1,42 @@
+build-extension: true
+app-id: org.freedesktop.Sdk.Extension.cs573
+branch: '20.08'
+sdk: org.freedesktop.Sdk
+runtime: org.freedesktop.Sdk
+runtime-version: '20.08'
+separate-locales: false
+appstream-compose: false
+
+modules:
+  - name: cs573
+    buildsystem: simple
+    build-commands:
+      - install -D *.sh /usr/lib/sdk/cs573/
+      - install -D gccX /usr/lib/sdk/cs573/
+      - install -D bashrc /usr/lib/sdk/cs573/
+    sources:
+      - type: script
+        dest-filename: project.sh
+        commands:
+          - #!/bin/sh
+          - if [ $# -eq 0 ]; then
+          - exec /usr/bin/bash --rcfile /usr/lib/sdk/cs573/bashrc
+          - else
+          - exec /usr/bin/bash --rcfile /usr/lib/sdk/cs573/bashrc -ic "${@:1}"
+          - fi
+      - type: script
+        dest-filename: bashrc
+        commands:
+          - export PS1="\u@$FLATPAK_ID \e[34m\w\e[0m\n[\e[31m📦\e[0m]$ "
+          - alias ls='ls --color=auto'
+      - type: script
+        dest-filename: gccX
+        commands:
+          - echo "gccX is installed as default compiler."
+      - type: script
+        dest-filename: install.sh
+        commands:
+          - mkdir -p /app/bin
+          - ln -s /usr/lib/sdk/cs573/project.sh /app/bin/sh
+          - ln -s /usr/lib/sdk/cs573/project.sh /app/bin/bash
+          - ln -s /usr/lib/sdk/cs573/gccX /app/bin/gcc

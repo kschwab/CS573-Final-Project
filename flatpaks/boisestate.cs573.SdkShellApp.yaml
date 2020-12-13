@@ -1,0 +1,11 @@
+app-id: boisestate.cs573.SdkShellApp
+default-branch: stable
+runtime: boisestate.cs573.Sdk
+runtime-version: '20.08'
+sdk: boisestate.cs573.Sdk
+
+command: /usr/local/bin/sh
+
+finish-args:
+  - --filesystem=host
+  - --allow=devel

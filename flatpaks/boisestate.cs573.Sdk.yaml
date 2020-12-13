@@ -1,0 +1,43 @@
+build-runtime: true
+id: boisestate.cs573.Sdk
+id-platform: boisestate.cs573.Platform
+branch: '20.08'
+runtime: org.freedesktop.Sdk
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+
+modules:
+  - name: cs573
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /usr/local/bin
+      - install -D project.sh /usr/local/bin/sh
+      - install -D project.sh /usr/local/bin/bash
+      - install -D bashrc /etc/skel/.bashrc
+      - install -D gccX /usr/bin/gcc
+    sources:
+      - type: script
+        dest-filename: project.sh
+        commands:
+          - #!/bin/sh
+          - if [ $# -eq 0 ]; then
+          - exec /usr/bin/bash --rcfile /etc/skel/.bashrc
+          - else
+          - exec /usr/bin/bash --rcfile /etc/skel/.bashrc -ic "${@:1}"
+          - fi
+      - type: script
+        dest-filename: bashrc
+        commands:
+          - export PS1="\u@$FLATPAK_ID \e[34m\w\e[0m\n[\e[31m📦\e[0m]$ "
+          - alias ls='ls --color=auto'
+      - type: script
+        dest-filename: gccX
+        commands:
+          - echo "gccX is installed as default compiler."
+
+finish-args:
+  - --filesystem=host
+  - --allow=devel
+  - --runtime=boisestate.cs573.Platform
+  - --sdk=boisestate.cs573.Sdk
+  - --env=PATH=/usr/local/bin:/usr/bin:$PATH
